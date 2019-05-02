@@ -29,7 +29,7 @@ def getData():
     mssql_host = 'tcp:mdpsqldbserverqc.database.windows.net'
     mssql_db = 'mdp'
     mssql_user = 'appadmin'
-    mssql_pwd = 'Robo#2010#'
+    mssql_pwd = 'Robo#2010'
     mssql_port = 1433 
     mssql_driver = 'ODBC Driver 17 for SQL Server'
     database_server_name = "mdpsqldbserverdev"
@@ -48,10 +48,18 @@ def getData():
     cursor = cnxn.cursor()
     sql_query = " "
     if filtercondition == '*'  and incrementaldate != ' ' :
+        sql_query = "SELECT * FROM (SELECT *, Row_number() OVER (ORDER BY Device_Data_Feed_Unique_Identifier DESC) AS rownum FROM [dbo].iSolve_Device_Data_Stg)tb1 WHERE rownum between " + offset + "AND " + limit + " AND Last_Update_Date >='"+incrementaldate+"';"
+        print(sql_query)
+        #sql_query = "SELECT * FROM "+ "dbo.iSolve_Asset_Stg" +" WHERE Last_Update_Date >='" + strDate + "';"
+    if filtercondition == '*'  and incrementaldate == ' ' :
+        sql_query = "SELECT * FROM (SELECT * , Row_number() OVER (ORDER BY Device_Data_Feed_Unique_Identifier DESC) AS rownum FROM [dbo].iSolve_Device_Data_Stg)tbl WHERE rownum between " + offset + "AND " + limit +";"
+
+    '''
+    if filtercondition == '*'  and incrementaldate != ' ' :
         sql_query = "SELECT * FROM "+ "dbo.iSolve_Asset_Stg" +" WHERE Last_Update_Date >='" + incrementaldate + "';"
     if filtercondition == '*'  and incrementaldate == ' ' :
         sql_query = "SELECT * from "+"dbo.iSolve_Asset_Stg ORDER BY ASSET_Identifier" +"OFFSET "+ offset + "FETCH NEXT "+limit+" ROWS ONLY"+";"
-
+    '''
     '''
     if filtercondition == '*' and columnname == ' ' and incrementaldate == ' ' :
     		sql_query = "SELECT * from "+tablename +";"
