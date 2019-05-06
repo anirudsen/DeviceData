@@ -48,11 +48,11 @@ def getData():
     cursor = cnxn.cursor()
     sql_query = " "
     if filtercondition == '*'  and incrementaldate != ' ' :
-        sql_query = "SELECT * FROM (SELECT *, Row_number() OVER (ORDER BY Device_Data_Feed_Unique_Identifier DESC) AS rownum FROM [dbo].iSolve_Device_Data_Stg)tb1 WHERE rownum between " + offset + " AND " + limit + " AND Last_Update_Date >='"+incrementaldate+"';"
+        sql_query = "SELECT * FROM (SELECT *, Row_number() OVER (ORDER BY Device_Data_Feed_Unique_Identifier DESC) AS rownum FROM [dbo].iSolve_Device_Data_Stg)tb1 WHERE rownum between " + offset + "AND " + limit + " AND Last_Update_Date >='"+incrementaldate+"';"
         print(sql_query)
         #sql_query = "SELECT * FROM "+ "dbo.iSolve_Asset_Stg" +" WHERE Last_Update_Date >='" + strDate + "';"
     if filtercondition == '*'  and incrementaldate == ' ' :
-        sql_query = "SELECT * FROM (SELECT * , Row_number() OVER (ORDER BY Device_Data_Feed_Unique_Identifier DESC) AS rownum FROM [dbo].iSolve_Device_Data_Stg)tbl WHERE rownum between " + offset + " AND " + limit +";"
+        sql_query = "SELECT * FROM (SELECT * , Row_number() OVER (ORDER BY Device_Data_Feed_Unique_Identifier DESC) AS rownum FROM [dbo].iSolve_Device_Data_Stg)tbl WHERE rownum between " + offset + "AND " + limit +";"
 
     '''
     if filtercondition == '*'  and incrementaldate != ' ' :
@@ -75,18 +75,18 @@ def getData():
 	    sql_query = "SELECT "+ columnname + "FROM "+ tablename +" WHERE Last_Update_Date >='" + incrementaldate + "';"
 
     '''
-    '''
+    
     cursor.execute(sql_query) 
     #rows = cursor.fetchall()
     columns = [column[0] for column in cursor.description]
     results = []
     for row in cursor.fetchall():
         results.append(dict(zip(columns, row)))
-    '''
+    
     #rec = [ dict(rec) for rec in rows ]
 
 #j = json.dumps(objects_list,myconverter)
-    return jsonify(sql_query)
+    return jsonify(results)
 
 
 @app.route('/incremental')
