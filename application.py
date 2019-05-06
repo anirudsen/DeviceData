@@ -75,7 +75,7 @@ def getData():
 	    sql_query = "SELECT "+ columnname + "FROM "+ tablename +" WHERE Last_Update_Date >='" + incrementaldate + "';"
 
     '''
-    cursor.execute("SELECT TOP 10 * FROM dbo.iSolve_Device_Data_Stg;") 
+    cursor.execute(sql_query) 
     #rows = cursor.fetchall()
     columns = [column[0] for column in cursor.description]
     results = []
