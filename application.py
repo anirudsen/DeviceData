@@ -84,7 +84,7 @@ def getData():
     #rec = [ dict(rec) for rec in rows ]
 
 #j = json.dumps(objects_list,myconverter)
-    return jsonify(results)
+    return jsonify(sql_query)
 
 
 @app.route('/incremental')
