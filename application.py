@@ -76,7 +76,7 @@ def getData():
 
     '''
     
-    cursor.execute("SELECT * FROM (SELECT * , Row_number() OVER (ORDER BY Device_Data_Feed_Unique_Identifier) AS rownum FROM [dbo].iSolve_Device_Data_Stg)tbl WHERE rownum between 0 AND 10;") 
+    cursor.execute("SELECT TOP 10 * FROM dbo.iSolve_Device_Data_Stg;") 
     #rows = cursor.fetchall()
     columns = [column[0] for column in cursor.description]
     results = []
