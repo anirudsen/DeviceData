@@ -76,7 +76,7 @@ def getData():
 
     '''
     
-    cursor.execute(sql_query) 
+    cursor.execute("SELECT TOP 10 * FROM dbo.iSolve_Device_Data_Stg;") 
     #rows = cursor.fetchall()
     columns = [column[0] for column in cursor.description]
     results = []
